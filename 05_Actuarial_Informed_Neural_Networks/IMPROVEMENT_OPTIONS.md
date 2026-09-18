@@ -185,6 +185,6 @@ Ordine rivisto per massimizzare il rapporto **impatto × spiegabilità / sforzo*
 - Sezione 8.8: SCR aggiornati (ensemble)
 - Sezione 8.9: Persistenza asset ensemble
 
-**Budget computazionale**: ~50 min training + ~150 min forecast = ~200 min (~3.5 ore su M1 Pro).
+**Budget computazionale**: ~50 min training + ~30 min forecast (200 sim/modello × 5 seed × 2 sessi) = ~80 min (~1.3 ore su M1 Pro). Usiamo 200 sim per modello perché 5 × 200 = 1.000 traiettorie totali (stessa dimensione campionaria di NB04/07).
 
 **Stato**: Notebook creato, da eseguire.
