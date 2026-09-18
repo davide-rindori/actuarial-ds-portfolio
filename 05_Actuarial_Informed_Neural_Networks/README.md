@@ -35,13 +35,13 @@ Instead of relying on a single model, 5 independently trained models (one per se
 - Temporal saliency and SHAP influence mapping.
 
 ### 6. Stress Test & SCR
-- **SCR (ES 99.0%)**: +3.76 years (CHE Male), +2.92 years (CHE Female).
-- **Reverse stress test**: δ* = 45.3% (CHE Male) — critical shock threshold under SST.
+- **SCR (ES 99.0%)**: +1.888 years (CHE Male), +1.526 years (CHE Female).
+- **Reverse stress test**: δ* = 22.8% (CHE Male), 25.4% (CHE Female) — critical shock threshold under SST.
 - **Model-based stress test**: STABLE (amplification ratio 1.02×, no explosive feedback).
 
 ## Project Structure
 - `data/`: Mortality data assets (HMD, same cluster as Project 04).
-- `models/`: Serialized AINN models and scalers.
+- `models/`: Serialized AINN ensemble models (5 seeds) and scalers.
 - `notebooks/`:
     - `01_data_and_baseline.ipynb`: Data loading, EDA, log-mortality matrices. ✓
     - `02_actuarial_benchmarking.ipynb`: Li-Lee sex-specific, stationarity analysis. ✓
@@ -67,4 +67,4 @@ Instead of relying on a single model, 5 independently trained models (one per se
 - **Design**: Viridis colour palette; Helvetica typography.
 
 ## Status
-Pipeline complete (Notebooks 01-06). Next: Model Passport update and paper drafting.
+Pipeline complete (Notebooks 01-06). Ensemble with residual-calibrated process noise integrated into main pipeline. Next: paper drafting.
