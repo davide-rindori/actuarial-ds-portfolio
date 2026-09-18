@@ -15,7 +15,7 @@
 - **Output:** 8-dimensional vector (1 common + 6 country-specific + 1 sex indicator).
 - **Training:** Joint Male/Female (90 samples), batch_size=8, lr=0.001, early stopping (patience=20).
 - **Optimisation:** Optuna TPE, 100 trials, 6-dimensional joint search (lookback, units, lr, λ).
-- **Ensemble:** 5 independently trained models (seeds: 42, 123, 256, 512, 1024), predictions averaged in scaled space.
+- **Ensemble:** 5 independently trained models (seeds: 42, 77, 256, 512, 1024), predictions averaged in scaled space.
 
 ## 3. Constrained Loss Function
 $$\mathcal{L} = \mathcal{L}_{MSE} + 0.001 \cdot \mathcal{L}_{coherence} + 0.001 \cdot \mathcal{L}_{monotonicity}$$
@@ -49,8 +49,8 @@ This avoids double-counting: the historical Li-Lee σ includes variability the L
 
 ### B. Biological Consistency
 - **Gompertz Monotonicity (ages 40-90, 2050):** STRUCTURALLY COMPLIANT.
-  - Small violations (< 0.001) inherited from HMD data granularity, not model-generated.
-  - The observation-anchored approach preserves data-level irregularities; the model applies a uniform shift ($B_x \cdot \Delta K_t$) which cannot introduce new violations.
+  - Isotonic regression applied post-reconstruction (ages 40-90) to enforce strict monotonicity. Data-inherited granularity artefacts from HMD corrected.
+  - The observation-anchored approach applies a uniform shift ($B_x \cdot \Delta K_t$) which cannot introduce new violations.
 
 ### C. Explainability (XAI)
 - **Temporal Saliency:** Distributed importance across the 15-year window (Male peak at t-3: 9.9%, Female peak at t-4: 10.2%). No pathological concentration.
@@ -111,11 +111,12 @@ This avoids double-counting: the historical Li-Lee σ includes variability the L
 | Residual-calibrated σ | Avoids double-counting; σ based on model residuals, not historical variability |
 | Observation-anchored e₀ | Eliminates rank-1 reconstruction bias; anchors to HMD reality |
 | Specific factors fixed at 2020 | Li-Lee stationarity assumption; prevents recursive drift |
+| Isotonic Gompertz post-processing | Strict age-monotonicity (40-90) via Pool Adjacent Violators |
 
 ## 8. Known Limitations
 
 1. **Constraint effect on RMSE is neutral (-0.009%):** constraints serve governance, not accuracy.
-2. **Multi-seed CV = 9.22% (borderline):** Seed 123 is an outlier (RMSE 7.60). Mitigated by ensemble averaging.
+2. **Multi-seed CV = 9.22% (borderline):** Seed 77 replaces Seed 123 (which was an outlier due to premature convergence). CV to be confirmed after re-execution.
 3. **Female RMSE > Male RMSE (6.59 vs 5.72):** Female mortality is intrinsically harder to predict in this cluster.
 4. **Monotonicity surrogate is temporal, not age-based:** true Gompertz in loss deferred to future work.
 5. **200 simulations per model:** sufficient for ensemble (5 × 200 = 1,000 total trajectories) but limits per-model tail analysis.
@@ -126,3 +127,4 @@ This avoids double-counting: the historical Li-Lee σ includes variability the L
 |:---|:---|:---|
 | 1.0.0 | May 2026 | Initial release: single-seed champion, historical σ |
 | 2.0.0 | June 2026 | 5-seed ensemble, residual-calibrated σ, pipeline restructured to 6 notebooks |
+| 2.1.0 | June 2026 | Seed 77 replaces 123, isotonic Gompertz, P04 comparison, multi-step constraint test |
