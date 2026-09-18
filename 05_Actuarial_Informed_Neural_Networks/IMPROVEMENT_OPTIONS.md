@@ -134,4 +134,57 @@ Ordine rivisto per massimizzare il rapporto **impatto × spiegabilità / sforzo*
 - Sezione 7.7: SCR aggiornati (VaR 99.5% e ES 99.0%)
 - Sezione 7.8: Persistenza asset corretti
 
-**Stato**: Notebook creato, da eseguire. Dopo l'esecuzione, valutare se gli IC sono in range ragionevole (target: ±2-3 anni) e decidere se procedere con Step 2 (ensemble).
+**Stato**: ✅ COMPLETATO.
+
+**Risultati (Giugno 2026)**:
+
+| Metrica | NB04 (vecchio σ) | NB07 (σ corretto) | Riduzione |
+|:--|:--|:--|:--|
+| σ Kt Male | 5.99 | 2.80 | **53%** |
+| σ Kt Female | 9.08 | 3.64 | **60%** |
+| 95% CI CHE Male | 7.73 yr | 3.77 yr | **51%** |
+| 95% CI CHE Female | 7.88 yr | 3.15 yr | **60%** |
+| SCR CHE Male (ES 99%) | +3.760 yr | +2.167 yr | **42%** |
+| SCR CHE Female (ES 99%) | +2.919 yr | +1.606 yr | **45%** |
+
+**Osservazioni chiave**:
+- Le mediane non si sono mosse (CHE Male: 82.01→82.04, Female: 86.04→85.99). Il problema era interamente nel noise, non nel modello.
+- Gli IC sono ora ±1.9-2.2 anni (M) e ±1.3-1.9 anni (F) — nel target di ±2-3 anni.
+- La riduzione è uniforme su tutti i 6 paesi, confermando che il double-counting era sistematico.
+- Risultato pubblicabile: "la calibrazione del process noise domina l'incertezza delle proiezioni a 30 anni".
+
+**Decisione**: procedere con Step 2 (ensemble) per stabilizzare ulteriormente.
+
+---
+
+### Step 2: Ensemble di 5 seed (IN CORSO)
+
+**Data inizio**: Giugno 2026
+**Notebook**: `08_seed_ensemble.ipynb`
+
+**Approccio implementato (Opzione 4b — model averaging)**:
+
+1. Riallenare il champion (LSTM 48-32, lb=15, lr=0.001, λ=0.001) con 5 seed diversi: [42, 123, 256, 512, 1024].
+2. Per ogni modello, eseguire 1,000 simulazioni MC Dropout (30 anni × 2 sessi).
+3. Calcolare la media delle predizioni scalate dei 5 modelli (averaging in scaled space).
+4. Applicare il σ corretto (da NB07) come process noise.
+5. Ricostruire e₀, CI, SCR e confrontare con single-seed.
+
+**Perché media in spazio scalato**: tutti i modelli condividono lo stesso scaler (fittato sugli stessi dati di training). Mediare le predizioni scalate cancella il rumore seed-specific preservando il segnale di mortalità condiviso.
+
+**Spiegabilità**: "Model averaging — equivalente a credibility pooling tra modelli. Ogni modello vede gli stessi dati ma impara rappresentazioni leggermente diverse; la media è più robusta di qualsiasi singolo modello."
+
+**Contenuto del Notebook 08**:
+- Sezione 8.1: Setup e caricamento config + σ corretto da NB07
+- Sezione 8.2: Data preparation e loss function (identiche a NB03)
+- Sezione 8.3: Training di 5 modelli con timing e salvataggio
+- Sezione 8.4: MC Dropout forecast per tutti i 5 modelli
+- Sezione 8.5: Ensemble averaging + noise corretto
+- Sezione 8.6: Ricostruzione e₀
+- Sezione 8.7: Tabella comparativa a 3 stadi (NB04 → NB07 → NB08)
+- Sezione 8.8: SCR aggiornati (ensemble)
+- Sezione 8.9: Persistenza asset ensemble
+
+**Budget computazionale**: ~50 min training + ~150 min forecast = ~200 min (~3.5 ore su M1 Pro).
+
+**Stato**: Notebook creato, da eseguire.
