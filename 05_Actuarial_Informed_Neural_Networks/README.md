@@ -24,14 +24,17 @@ Architecture (units, learning rate), temporal context (lookback window), and act
 **RMSE**: 6.1725 (overall), 5.72 (Male), 6.59 (Female). Multi-seed CV: 8.90% (PASS).
 **Runtime**: 48 minutes on Apple M1 Pro.
 
-### 4. Regulatory-Grade Robustness
+### 4. 5-Seed Ensemble with Residual-Calibrated Process Noise
+Instead of relying on a single model, 5 independently trained models (one per seed) are averaged for forecasting. Process noise σ is calibrated on the model's walk-forward residuals — not on historical Li-Lee variability — to avoid double-counting the uncertainty the LSTM already captures. This reduces 95% CI width by ~55% and produces SCR estimates in the +1.3–2.6 year range, consistent with the dual uncertainty framework.
+
+### 5. Regulatory-Grade Robustness
 - Multi-seed robustness (CV = 8.90%, PASS).
 - Lookback sensitivity analysis.
 - Rolling-window validation (CV = 5.78%, PASS).
 - Gompertz monotonicity audit (structurally compliant).
 - Temporal saliency and SHAP influence mapping.
 
-### 5. Stress Test & SCR
+### 6. Stress Test & SCR
 - **SCR (ES 99.0%)**: +3.76 years (CHE Male), +2.92 years (CHE Female).
 - **Reverse stress test**: δ* = 45.3% (CHE Male) — critical shock threshold under SST.
 - **Model-based stress test**: STABLE (amplification ratio 1.02×, no explosive feedback).
@@ -42,8 +45,8 @@ Architecture (units, learning rate), temporal context (lookback window), and act
 - `notebooks/`:
     - `01_data_and_baseline.ipynb`: Data loading, EDA, log-mortality matrices. ✓
     - `02_actuarial_benchmarking.ipynb`: Li-Lee sex-specific, stationarity analysis. ✓
-    - `03_training_ablation_lambda.ipynb`: Joint Bayesian Optimisation, multi-seed robustness, lookback sensitivity. ✓
-    - `04_stochastic_forecasting.ipynb`: MC Dropout forecasting, observation-anchored e0, MBC analysis. ✓
+    - `03_training_ablation_lambda.ipynb`: Joint Bayesian Optimisation (Optuna 6D), 5-seed ensemble training, ablation studies. ✓
+    - `04_stochastic_forecasting.ipynb`: Residual-calibrated process noise, 5-seed ensemble MC Dropout, MBC, observation-anchored e₀. ✓
     - `05_xai_validation.ipynb`: Temporal saliency, SHAP, Gompertz audit, rolling-window. ✓
     - `06_stress_test_scr.ipynb`: SCR (VaR/ES), reverse stress test, model-based stress test. ✓
 - `src/`: Modular source code (custom losses, reproducibility, styling).

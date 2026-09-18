@@ -820,3 +820,33 @@ A negative shock of -2.0 (in standardised $\Delta K_t$ space, approximately 2 st
 **Interpretation**: The model absorbs the shock without amplification. The slight dampening (~75% of the original magnitude persists at 2050) is expected — as the shock exits the 15-year sliding window, its direct influence fades, but the cumulative effect remains because levels are computed by integration. The model does not exhibit explosive feedback loops.
 
 **Regulatory value**: This demonstrates that the AINN is numerically stable under perturbation — a key requirement for FINMA internal model validation. No explosive amplification means the model can be safely used for scenario analysis without producing unrealistic cascading effects.
+
+
+---
+
+## 14. Pipeline Refinement: Process Noise Calibration & Ensemble
+
+### 14.1 The Double-Counting Problem
+
+During post-completion review, we identified that the process noise σ in the dual uncertainty framework was calibrated on the **full historical variability** of Li-Lee first differences. This includes variability that the LSTM has already learned to predict — resulting in double-counting.
+
+The historical σ (Kt, Male: 5.99, Female: 9.08) was replaced with the **residual σ** from walk-forward one-step-ahead predictions (Kt, Male: 2.80, Female: 3.64). This represents a **53-60% reduction**, confirming that the LSTM captures roughly half of the historical mortality variability.
+
+**Impact**: 95% CI width reduced by ~55% across all countries. SCR estimates dropped from +3.76 to +1.73 years (CHE Male, ES 99.0%). Medians remained unchanged — the problem was entirely in the noise calibration, not in the model.
+
+### 14.2 5-Seed Ensemble (Model Averaging)
+
+To address the borderline multi-seed CV (8.90%), we adopted a model averaging approach: 5 models trained with different seeds (42, 123, 256, 512, 1024) are averaged in scaled space before inverse transform and noise addition. This is equivalent to credibility pooling across model initialisations.
+
+The ensemble uses 200 MC Dropout simulations per model × 5 models = 1,000 total trajectories, matching the sample size of single-seed runs.
+
+**Impact**: Further ~10% CI reduction on top of σ correction. The combined effect (σ recalibration + ensemble) produces CI of ±1.7-2.2 years and SCR in the +1.3-2.6 year range — consistent with the sex-specific decomposition of P04's Total results.
+
+### 14.3 Notebook Restructuring
+
+The improvements were initially developed in exploratory notebooks (NB07: σ recalibration, NB08: ensemble). These were subsequently absorbed into the main pipeline:
+- **NB03**: now includes 5-seed ensemble training with model persistence (previously: disposable multi-seed test).
+- **NB04**: now includes walk-forward residual calibration, ensemble MC Dropout forecast, and corrected process noise (previously: single-seed with historical σ).
+- **NB05-06**: unchanged in logic, now consume the ensemble-corrected results.
+
+The pipeline is now 6 notebooks (01-06), linear and self-contained.
