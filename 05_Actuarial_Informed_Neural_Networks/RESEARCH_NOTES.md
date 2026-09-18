@@ -636,6 +636,8 @@ The larger female bias is consistent with the model's higher RMSE on female data
 
 ### 10.6 Comparison with Project 04
 
+> **Note**: The results in this section reflect the initial single-seed pipeline with historical σ. The final ensemble results with residual-calibrated σ are documented in Section 14 and in the Model Passport v2.0.0.
+
 | Metric | Project 04 (Total) | Project 05 (Male) | Project 05 (Female) |
 |:---|:---|:---|:---|
 | CHE $e_0$ (2020) | 81.71 | 80.26 | 83.58 |
@@ -762,6 +764,8 @@ SHAP (KernelExplainer) decomposes the Swiss male mortality forecast into contrib
 
 ## 13. Stress Test & Regulatory Capital (Notebook 06)
 
+> **Note**: The SCR and stress test numbers in this section reflect the initial single-seed pipeline with historical σ. The final results (ensemble + residual-calibrated σ) are in Section 14 and the Model Passport v2.0.0. The model-based stress test result (amplification ratio 1.02×, STABLE) is unchanged as it depends on model dynamics, not noise calibration.
+
 ### 13.1 Solvency Capital Requirement (SCR)
 
 #### Results (2050 Horizon, AINN without MBC)
@@ -820,3 +824,67 @@ A negative shock of -2.0 (in standardised $\Delta K_t$ space, approximately 2 st
 **Interpretation**: The model absorbs the shock without amplification. The slight dampening (~75% of the original magnitude persists at 2050) is expected — as the shock exits the 15-year sliding window, its direct influence fades, but the cumulative effect remains because levels are computed by integration. The model does not exhibit explosive feedback loops.
 
 **Regulatory value**: This demonstrates that the AINN is numerically stable under perturbation — a key requirement for FINMA internal model validation. No explosive amplification means the model can be safely used for scenario analysis without producing unrealistic cascading effects.
+
+
+---
+
+## 14. Pipeline Refinement: Process Noise Calibration & Ensemble
+
+### 14.1 The Double-Counting Problem
+
+During post-completion review, we identified that the process noise σ in the dual uncertainty framework was calibrated on the **full historical variability** of Li-Lee first differences. This includes variability that the LSTM has already learned to predict — resulting in double-counting.
+
+The historical σ (Kt, Male: 5.99, Female: 9.08) was replaced with the **residual σ** from walk-forward one-step-ahead predictions (Kt, Male: 2.80, Female: 3.64). This represents a **53-60% reduction**, confirming that the LSTM captures roughly half of the historical mortality variability.
+
+**Impact**: 95% CI width reduced by ~55% across all countries. Medians remained unchanged — the problem was entirely in the noise calibration, not in the model.
+
+### 14.2 5-Seed Ensemble (Model Averaging)
+
+To address the borderline multi-seed CV (8.90%), we adopted a model averaging approach: 5 models trained with different seeds (42, 123, 256, 512, 1024) are averaged in scaled space before inverse transform and noise addition. This is equivalent to credibility pooling across model initialisations.
+
+The ensemble uses 200 MC Dropout simulations per model × 5 models = 1,000 total trajectories, matching the sample size of single-seed runs.
+
+**Impact**: The combined effect (σ recalibration + ensemble) produces the following final results:
+
+### 14.3 Final Results (Ensemble + Residual-Calibrated σ)
+
+#### Life Expectancy Projections (2020-2050)
+
+| Country | Male e₀ (2020) | Male e₀ (2050) | 95% CI Width (M) | Female e₀ (2020) | Female e₀ (2050) | 95% CI Width (F) |
+|:---|:---|:---|:---|:---|:---|:---|
+| Switzerland | 80.26 | 82.05 | 3.67 | 83.58 | 85.44 | 3.11 |
+| Sweden | 79.94 | 81.74 | 3.70 | 82.93 | 84.89 | 3.33 |
+| Norway | 80.57 | 82.30 | 3.54 | 83.27 | 85.16 | 3.20 |
+| West Germany | 78.28 | 80.34 | 4.25 | 82.20 | 84.35 | 3.63 |
+| Netherlands | 79.14 | 81.04 | 3.92 | 81.96 | 84.16 | 3.72 |
+| Japan | 80.44 | 82.21 | 3.64 | 84.89 | 86.44 | 2.58 |
+
+#### SCR (ES 99.0%, SST)
+
+| Country | Male SCR | Female SCR |
+|:---|:---|:---|
+| Switzerland | +1.888 | +1.526 |
+| Sweden | +1.924 | +1.658 |
+| Norway | +1.835 | +1.590 |
+| West Germany | +2.223 | +1.809 |
+| Netherlands | +2.043 | +1.858 |
+| Japan | +1.883 | +1.253 |
+
+#### Reverse Stress Test
+
+| Country | Male δ* | Female δ* |
+|:---|:---|:---|
+| Switzerland | 22.8% | 25.4% |
+| West Germany | 23.2% | 25.7% |
+| Japan | 22.7% | 24.5% |
+
+These results are consistent with the sex-specific decomposition of Project 04's Total results (+1.153 years ES 99.0% for Switzerland). The sex-specific SCR is necessarily higher because it decomposes uncertainty that the "Total" aggregate masks.
+
+### 14.4 Notebook Restructuring
+
+The improvements were initially developed in exploratory notebooks (NB07: σ recalibration, NB08: ensemble). These were subsequently absorbed into the main pipeline:
+- **NB03**: now includes 5-seed ensemble training with model persistence (previously: disposable multi-seed test).
+- **NB04**: now includes walk-forward residual calibration, ensemble MC Dropout forecast, and corrected process noise (previously: single-seed with historical σ).
+- **NB05-06**: unchanged in logic, now consume the ensemble-corrected results.
+
+The pipeline is now 6 notebooks (01-06), linear and self-contained.
