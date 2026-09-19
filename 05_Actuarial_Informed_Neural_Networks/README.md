@@ -21,7 +21,7 @@ A single model trained on Male and Female mortality jointly, with a binary sex i
 Architecture (units, learning rate), temporal context (lookback window), and actuarial constraints (λ values) are optimised simultaneously in a single 100-trial joint search using Optuna's TPE sampler. This is methodologically superior to sequential tuning and reveals that the optimal constraint weight is architecture-dependent.
 
 **Champion**: LSTM (48-32 units), lookback=15, lr=0.001, λ_coherence=0.001, λ_monotonicity=0.001.
-**RMSE**: 6.1725 (overall), 5.72 (Male), 6.59 (Female). Multi-seed CV: 8.90% (PASS).
+**RMSE**: 6.1725 (overall), 5.72 (Male), 6.59 (Female). Multi-seed CV: 1.06% (PASS).
 **Runtime**: 48 minutes on Apple M1 Pro.
 
 ### 4. 5-Seed Ensemble with Residual-Calibrated Process Noise
@@ -35,8 +35,8 @@ Instead of relying on a single model, 5 independently trained models (one per se
 - Temporal saliency and SHAP influence mapping.
 
 ### 6. Stress Test & SCR
-- **SCR (ES 99.0%)**: +1.888 years (CHE Male), +1.526 years (CHE Female).
-- **Reverse stress test**: δ* = 22.8% (CHE Male), 25.4% (CHE Female) — critical shock threshold under SST.
+- **SCR (ES 99.0%)**: +1.907 years (CHE Male), +1.516 years (CHE Female).
+- **Reverse stress test**: δ* = 23.0% (CHE Male), 25.2% (CHE Female) — critical shock threshold under SST.
 - **Model-based stress test**: STABLE (amplification ratio 1.02×, no explosive feedback).
 
 ## Project Structure

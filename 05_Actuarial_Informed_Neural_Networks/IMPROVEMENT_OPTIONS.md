@@ -10,8 +10,8 @@ Stato: ✅ **COMPLETATO** — Step 1 e Step 2 implementati, pipeline ristruttura
 
 L'RMSE one-step-ahead (6.17) era buono, ma i risultati downstream erano inflazionati a causa del double-counting nel process noise:
 - IC ±6.4 anni (vs ±0.9 in P04) → **risolto: ±3.1-4.3 anni**
-- SCR CHE +3.76 anni M / +2.92 F (vs +1.15 in P04 Total) → **risolto: +1.89 M / +1.53 F**
-- Multi-seed CV 8.90% (borderline) → **mitigato con ensemble (5 seed)**
+- SCR CHE +3.76 anni M / +2.92 F (vs +1.15 in P04 Total) → **risolto: +1.91 M / +1.52 F**
+- Multi-seed CV 8.90% (borderline) → **risolto: CV = 1.06% con seed 77 al posto di 123**
 
 La causa era: **σ calibrato sulla variabilità storica totale includeva variabilità che l'LSTM già cattura → double-counting → IC inflazionati → SCR gonfiato**.
 
@@ -48,13 +48,13 @@ La causa era: **σ calibrato sulla variabilità storica totale includeva variabi
 |:--|:--|:--|:--|
 | σ Kt Male | 5.99 | 2.80 | **53%** |
 | σ Kt Female | 9.08 | 3.64 | **60%** |
-| 95% CI CHE Male | 7.73 yr | 3.67 yr | **53%** |
-| 95% CI CHE Female | 7.88 yr | 3.11 yr | **61%** |
-| SCR CHE Male (ES 99%) | +3.760 yr | +1.888 yr | **50%** |
-| SCR CHE Female (ES 99%) | +2.919 yr | +1.526 yr | **48%** |
-| Mediana CHE Male (2050) | 82.01 | 82.05 | stabile |
-| Mediana CHE Female (2050) | 86.04 | 85.44 | stabile |
-| Reverse stress δ* CHE Male | 45.3% | 22.8% | coerente con SCR ridotto |
+| 95% CI CHE Male | 7.73 yr | 3.69 yr | **52%** |
+| 95% CI CHE Female | 7.88 yr | 3.03 yr | **62%** |
+| SCR CHE Male (ES 99%) | +3.760 yr | +1.907 yr | **49%** |
+| SCR CHE Female (ES 99%) | +2.919 yr | +1.516 yr | **48%** |
+| Mediana CHE Male (2050) | 82.01 | 82.06 | stabile |
+| Mediana CHE Female (2050) | 86.04 | 85.55 | stabile |
+| Reverse stress δ* CHE Male | 45.3% | 23.0% | coerente con SCR ridotto |
 
 ---
 

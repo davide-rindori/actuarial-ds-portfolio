@@ -852,31 +852,31 @@ The ensemble uses 200 MC Dropout simulations per model × 5 models = 1,000 total
 
 | Country | Male e₀ (2020) | Male e₀ (2050) | 95% CI Width (M) | Female e₀ (2020) | Female e₀ (2050) | 95% CI Width (F) |
 |:---|:---|:---|:---|:---|:---|:---|
-| Switzerland | 80.26 | 82.05 | 3.67 | 83.58 | 85.44 | 3.11 |
-| Sweden | 79.94 | 81.74 | 3.70 | 82.93 | 84.89 | 3.33 |
-| Norway | 80.57 | 82.30 | 3.54 | 83.27 | 85.16 | 3.20 |
-| West Germany | 78.28 | 80.34 | 4.25 | 82.20 | 84.35 | 3.63 |
-| Netherlands | 79.14 | 81.04 | 3.92 | 81.96 | 84.16 | 3.72 |
-| Japan | 80.44 | 82.21 | 3.64 | 84.89 | 86.44 | 2.58 |
+| Switzerland | 80.26 | 82.06 | 3.69 | 83.58 | 85.55 | 3.03 |
+| Sweden | 79.94 | 81.74 | 3.73 | 82.93 | 85.01 | 3.26 |
+| Norway | 80.58 | 82.30 | 3.57 | 83.27 | 85.28 | 3.13 |
+| West Germany | 78.28 | 80.35 | 4.28 | 82.20 | 84.48 | 3.55 |
+| Netherlands | 79.14 | 81.05 | 3.95 | 81.96 | 84.29 | 3.64 |
+| Japan | 80.44 | 82.22 | 3.67 | 84.89 | 86.53 | 2.52 |
 
 #### SCR (ES 99.0%, SST)
 
 | Country | Male SCR | Female SCR |
 |:---|:---|:---|
-| Switzerland | +1.888 | +1.526 |
-| Sweden | +1.924 | +1.658 |
-| Norway | +1.835 | +1.590 |
-| West Germany | +2.223 | +1.809 |
-| Netherlands | +2.043 | +1.858 |
-| Japan | +1.883 | +1.253 |
+| Switzerland | +1.907 | +1.516 |
+| Sweden | +1.942 | +1.649 |
+| Norway | +1.852 | +1.580 |
+| West Germany | +2.245 | +1.800 |
+| Netherlands | +2.063 | +1.849 |
+| Japan | +1.902 | +1.243 |
 
 #### Reverse Stress Test
 
 | Country | Male δ* | Female δ* |
 |:---|:---|:---|
-| Switzerland | 22.8% | 25.4% |
-| West Germany | 23.2% | 25.7% |
-| Japan | 22.7% | 24.5% |
+| Switzerland | 23.0% | 25.2% |
+| West Germany | 23.5% | 25.5% |
+| Japan | 22.9% | 24.3% |
 
 These results are consistent with the sex-specific decomposition of Project 04's Total results (+1.153 years ES 99.0% for Switzerland). The sex-specific SCR is necessarily higher because it decomposes uncertainty that the "Total" aggregate masks.
 

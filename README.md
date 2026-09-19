@@ -21,7 +21,7 @@ A challenger internal model that embeds actuarial domain knowledge directly into
 - **Optuna 6D Joint Optimisation:** Architecture, lookback, and constraints optimised simultaneously (100 trials). Champion: LSTM (48-32), lb=15, RMSE=6.17.
 - **5-Seed Ensemble with Residual-Calibrated σ:** Process noise calibrated on walk-forward model residuals (not historical variability) to avoid double-counting. 5 independently trained models averaged for robustness. CI reduced by ~55%.
 - **Stochastic Forecasting (2020–2050):** Observation-anchored projections with dual uncertainty (MC Dropout + residual-calibrated process noise). CHE Male: 80.3→82.1, CHE Female: 83.6→85.4.
-- **Regulatory Capital:** SCR (ES 99.0%) = +1.888 years (CHE Male), +1.526 years (CHE Female). Reverse stress test: δ* = 22.8% (Male), 25.4% (Female).
+- **Regulatory Capital:** SCR (ES 99.0%) = +1.907 years (CHE Male), +1.516 years (CHE Female). Reverse stress test: δ* = 23.0% (Male), 25.2% (Female).
 - **Model Stability:** Model-based stress test confirms STABLE behaviour (amplification ratio 1.02×).
 - **Documentation:** Includes [Model Passport](./05_Actuarial_Informed_Neural_Networks/MODEL_PASSPORT.md) and [Research Notes](./05_Actuarial_Informed_Neural_Networks/RESEARCH_NOTES.md).
 
