@@ -904,3 +904,33 @@ A synthetic "Total" life expectancy was computed from P05's sex-specific project
 
 #### D. Multi-Step Constraint Effect
 The constrained ensemble forecast was compared with a 30-year recursive forecast from the unconstrained baseline model (same architecture, no λ penalties) to test whether the AINN constraints have a measurable effect on long-horizon projections — even though they are neutral on one-step-ahead RMSE. This addresses the key question: do the constraints serve only governance, or do they also affect forecasting stability?
+
+### 14.6 Constraint Intensity Experiment (Notebook 07)
+
+The central experiment of the project. Five levels of λ_monotonicity (0, 0.001, 0.01, 0.1, 1.0) were tested on the champion architecture (LSTM 48-32, lb=15, seed 42) with all other parameters fixed (λ_coherence=0.001, corrected σ, 200 MC Dropout sims).
+
+#### Results
+
+| λ_mono | RMSE (cost) | frac(ΔKt>0) | CI Male | CI Female | CI Reduction |
+|:---|:---|:---|:---|:---|:---|
+| 0.0 | 6.173 (baseline) | 55.6% | 3.64 | 3.11 | — |
+| 0.001 | 6.173 (-0.01%) | 55.6% | 3.62 | 3.10 | -0.4% |
+| 0.01 | 6.171 (-0.03%) | 55.6% | 3.40 | 3.03 | -6.5% / -2.7% |
+| 0.1 | 6.225 (+0.84%) | 44.4% | 2.70 | 2.43 | -25.7% / -21.9% |
+| 1.0 | 6.315 (+2.29%) | 27.8% | 1.93 | 1.71 | -46.8% / -45.1% |
+
+#### Key Findings
+
+1. **λ=0.01 is a free lunch**: CI narrows by 6.5% (Male) with zero RMSE cost (-0.03%). The constraint is too weak to change frac(ΔKt>0) but stabilises the recursive trajectory.
+
+2. **λ=0.1 is the governance sweet spot**: CI narrows by 25% at a cost of only +0.84% RMSE. frac(ΔKt>0) drops from 55.6% to 44.4%. This is the optimal choice for regulatory internal models where forecast stability matters more than one-step accuracy.
+
+3. **λ=1.0 is too aggressive**: CI halved (-47%) but drift is extreme (-119 for males). The model is forced to predict constant improvement, producing overly optimistic projections (CHE Male e0 = 85.9 at 2050).
+
+4. **The RMSE one-step metric is misleading for constraint evaluation**: at λ=0.001 (Optuna's choice), the constraint has near-zero effect on both RMSE and CI. The constraint's value only becomes visible when measuring multi-step forecast stability — a metric that Optuna does not optimise.
+
+#### Interpretation for the AINN Framework
+
+The results demonstrate that the AINN monotonicity constraint is not a binary choice (on/off) but a **continuous governance dial**. The framework makes explicit a trade-off that is hidden in both classical models (where coherence is hardcoded) and unconstrained neural networks (where no structural bias exists).
+
+This is the central methodological contribution: the AINN provides a parametric continuum between the fully constrained actuarial world (Li-Lee, λ→∞) and the fully unconstrained ML world (standard LSTM, λ=0). The risk manager can select the appropriate operating point based on the use case.
