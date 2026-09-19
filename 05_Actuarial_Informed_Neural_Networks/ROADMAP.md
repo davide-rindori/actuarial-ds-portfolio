@@ -67,4 +67,5 @@ $$\mathcal{L} = \mathcal{L}_{MSE} + \lambda_1 \mathcal{L}_{coherence} + \lambda_
 - [x] **Phase E**: XAI (temporal saliency, SHAP), Gompertz audit, rolling-window validation (NB05).
 - [x] **Phase F**: SCR (VaR/ES), reverse stress test, model-based stress test (NB06).
 - [x] **Phase G**: Documentation consolidation (Model Passport v2.0, Research Notes, README).
-- [ ] **Phase H**: Paper drafting and arXiv submission.
+- [x] **Phase H**: Constraint intensity experiment — governance-accuracy trade-off analysis (NB07).
+- [ ] **Phase I**: Paper drafting and arXiv submission.

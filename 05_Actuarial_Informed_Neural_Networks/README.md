@@ -49,6 +49,7 @@ Instead of relying on a single model, 5 independently trained models (one per se
     - `04_stochastic_forecasting.ipynb`: Residual-calibrated process noise, 5-seed ensemble MC Dropout, MBC, observation-anchored e₀ with Gompertz isotonic correction. Includes cross-project comparison (P04 vs P05) and multi-step constraint effect analysis. ✓
     - `05_xai_validation.ipynb`: Temporal saliency, SHAP, Gompertz audit, rolling-window. ✓
     - `06_stress_test_scr.ipynb`: SCR (VaR/ES), reverse stress test, model-based stress test. ✓
+    - `07_constraint_intensity_experiment.ipynb`: Governance-accuracy trade-off analysis across 5 λ levels. ✓
 - `src/`: Modular source code (custom losses, reproducibility, styling).
 - `reports/figures/`: High-resolution visualizations.
 - `latex/`: Paper source files.
@@ -67,4 +68,4 @@ Instead of relying on a single model, 5 independently trained models (one per se
 - **Design**: Viridis colour palette; Helvetica typography.
 
 ## Status
-Pipeline complete (Notebooks 01-06). Ensemble with residual-calibrated process noise integrated into main pipeline. Next: paper drafting.
+Pipeline complete (Notebooks 01-07). Ensemble with residual-calibrated process noise integrated into main pipeline. Next: paper drafting.
