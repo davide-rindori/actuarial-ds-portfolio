@@ -21,4 +21,4 @@ def set_seed(seed: int = 42):
 
 def get_seed_list(n_seeds: int = 5) -> list:
     """Return the standard list of seeds for multi-seed robustness analysis."""
-    return [42, 123, 256, 512, 1024][:n_seeds]
+    return [42, 77, 256, 512, 1024][:n_seeds]
