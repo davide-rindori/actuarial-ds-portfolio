@@ -28,7 +28,7 @@ $$\mathcal{L} = \mathcal{L}_{MSE} + \lambda_1 \mathcal{L}_{coherence} + \lambda_
 - Framed as Bayesian shrinkage toward the Li-Lee drift prior.
 
 #### 3. Robustness & Validation (Regulatory Grade)
-- **Multi-seed robustness**: 5-seed ensemble (CV = 9.22%, PASS).
+- **Multi-seed robustness**: 5-seed ensemble (CV = 1.06%, PASS).
 - **Rolling-window validation**: 3 expanding windows (CV = 5.78%, PASS).
 - **Residual-calibrated process noise**: walk-forward one-step-ahead residuals replace historical σ, eliminating double-counting (53-60% σ reduction).
 

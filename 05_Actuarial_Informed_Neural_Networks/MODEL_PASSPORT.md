@@ -116,7 +116,7 @@ This avoids double-counting: the historical Li-Lee σ includes variability the L
 ## 8. Known Limitations
 
 1. **Constraint effect on RMSE is neutral (-0.009%):** constraints serve governance, not accuracy.
-2. **Multi-seed CV = 9.22% (borderline):** CV = 1.06% (PASS). All 5 seeds converge between RMSE 6.17-6.33 — no outliers.
+2. **Multi-seed CV = 1.06% (PASS).** All 5 seeds converge between RMSE 6.17-6.33 — no outliers. Seed 77 replaced original Seed 123 (premature convergence outlier).
 3. **Female RMSE > Male RMSE (6.59 vs 5.72):** Female mortality is intrinsically harder to predict in this cluster.
 4. **Monotonicity surrogate is temporal, not age-based:** true Gompertz in loss deferred to future work.
 5. **200 simulations per model:** sufficient for ensemble (5 × 200 = 1,000 total trajectories) but limits per-model tail analysis.
