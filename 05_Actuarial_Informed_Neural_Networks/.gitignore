@@ -17,5 +17,12 @@ __pycache__/
 # OS
 .DS_Store
 
-# LaTeX (entire folder — paper managed separately)
-latex/
+# LaTeX build artifacts
+latex/*.aux
+latex/*.log
+latex/*.out
+latex/*.bbl
+latex/*.blg
+latex/*.synctex.gz
+latex/*.fdb_latexmk
+latex/*.fls
