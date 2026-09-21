@@ -50,6 +50,8 @@ Instead of relying on a single model, 5 independently trained models (one per se
     - `05_xai_validation.ipynb`: Temporal saliency, SHAP, Gompertz audit, rolling-window. ✓
     - `06_stress_test_scr.ipynb`: SCR (VaR/ES), reverse stress test, model-based stress test. ✓
     - `07_constraint_intensity_experiment.ipynb`: Governance-accuracy trade-off analysis across 5 λ levels. ✓
+    - `08_ainn_vs_lilee_benchmark.ipynb`: Quantitative benchmark — AINN ensemble vs Li-Lee RWD (e₀, CI, SCR). ✓
+    - `09_backtest_10yr_hindcast.ipynb`: Out-of-sample 10-year backtest (train 1956-2010, validate 2011-2020). ✓
 - `src/`: Modular source code (custom losses, reproducibility, styling).
 - `reports/figures/`: High-resolution visualizations.
 - `latex/`: Paper source files.
@@ -68,4 +70,4 @@ Instead of relying on a single model, 5 independently trained models (one per se
 - **Design**: Viridis colour palette; Helvetica typography.
 
 ## Status
-Pipeline complete (Notebooks 01-07). Ensemble with residual-calibrated process noise integrated into main pipeline. Next: paper drafting.
+Pipeline complete (Notebooks 01-09). Ensemble with residual-calibrated process noise integrated into main pipeline. Next: paper drafting.
